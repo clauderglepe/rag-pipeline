@@ -1,0 +1,5 @@
+import { Controller } from '@nestjs/common';
+import { IngestionService } from './ingestion.service';
+
+@Controller('documents')
+export class IngestionController {}
