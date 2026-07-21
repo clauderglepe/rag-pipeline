@@ -311,5 +311,10 @@ rag-pipeline/
 ## 10. Antes de empezar: necesito confirmar 3 decisiones contigo
 
 Las decisiones de la §3 tienen un default recomendado, pero dependen de tu entorno. Te las
-pregunto abajo en formato de opciones — según tu respuesta, ajusto el ADR-0001 y arrancamos
-la Fase 0.
+pregunto abajo en formato de opciones:
+- ¿Cómo quieres correr los modelos de IA (embeddings y generación)?
+* No lo tengo claro, recomiéndamelo tú
+- ¿Puedes usar Docker en tu máquina para este proyecto?
+* Sí, tengo Docker disponible
+- Para las specs, ¿cómo trabajamos con OpenSpec?
+* Estructura manual, solo en chat
