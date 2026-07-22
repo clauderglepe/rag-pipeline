@@ -1,4 +1,3 @@
-// src/ingestion/chunk-repository.interface.ts
 export interface Chunk {
   id: string;
   documentId: string;
@@ -6,7 +5,7 @@ export interface Chunk {
   text: string;
   startOffset: number;
   endOffset: number;
-  approxPage: number;
+  page: number; // antes: approxPage
 }
 
 export interface ChunkRepository {
@@ -14,6 +13,4 @@ export interface ChunkRepository {
   findByDocumentId(documentId: string): Promise<Chunk[]>;
 }
 
-// Token de inyección: como es una interfaz (no existe en runtime), Nest necesita
-// un identificador explícito para poder inyectar la implementación concreta.
 export const CHUNK_REPOSITORY = Symbol('CHUNK_REPOSITORY');
