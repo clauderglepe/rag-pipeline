@@ -20,6 +20,9 @@ importers:
       '@nestjs/platform-express':
         specifier: ^11.0.1
         version: 11.1.28(@nestjs/common@11.1.28(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.28)
+      multer:
+        specifier: ^2.2.0
+        version: 2.2.0
       pdf-parse:
         specifier: ^2.4.5
         version: 2.4.5
