@@ -30,14 +30,33 @@ es aceptable mientras aprendemos el pipeline). La interfaz existe para que, cuan
 decida añadir persistencia (Postgres, SQLite, lo que sea — ver Fase 9), el resto del
 sistema (índices, retrieval) no cambie una sola línea.
 
-## 3. Metadata del chunk
+## 3. Metadata del chunk: página exacta, no aproximada
 
-Cada chunk guarda `approxPage` calculado dividiendo el offset de caracteres entre el
-promedio de caracteres por página del documento (`pdf-parse` no da offsets por página
-de forma nativa). Es una aproximación **etiquetada como tal** en el DTO
-(`approxPage`, no `page`), para no aparentar una precisión que no tenemos. Si en el
-frontend (Fase 7) el usuario necesita ir exactamente a la página, evaluamos entonces
-`pdfjs-dist` (que sí da posición por página) como reemplazo del extractor.
+**Decisión (actualizada):** cada chunk guarda `page`, calculado buscando en qué rango
+`[startOffset, endOffset)` de página cae el `startOffset` del chunk.
+
+**Historial de esta decisión:** en la versión inicial de este documento, `pdf-parse`
+(v1) no exponía límites de página de forma nativa, así que `approxPage` se calculaba
+dividiendo el offset de caracteres entre el promedio de caracteres por página del
+documento completo — una estimación, etiquetada explícitamente como tal en el nombre del
+campo (`approxPage`, no `page`).
+
+Al migrar a `pdf-parse` v2 (`PDFParse` + `getText()`), la librería devuelve
+`result.pages: { num, text }[]` — el texto real de cada página, ya troceado por el propio
+parser. `PdfExtractorService.extract()` reconstruye `fullText` concatenando esas páginas
+y registra el `startOffset`/`endOffset` real de cada una en `ExtractedPage`. Con eso,
+`ChunkingService.findPage()` ya no estima nada: busca el rango de página exacto que
+contiene el offset del chunk.
+
+**Consecuencia:** se elimina la necesidad del script de validación
+`validate-approx-page.ts` que existía para medir el desvío de la heurística — no hay
+heurística que validar. El campo se renombra de `approxPage` a `page` en todo el módulo
+(`RawChunk`, `Chunk`, specs) para reflejar que ya no es una aproximación.
+
+**Caso límite:** si un offset cae exactamente en el separador (`\n\n`) que
+`PdfExtractorService` inserta entre dos páginas, `findPage()` asigna la última página
+conocida antes de ese offset — un chunk no puede "no tener página", pero sí puede
+empezar justo en el límite entre dos.
 
 ## 4. Estructura de módulo NestJS
 
@@ -46,7 +65,7 @@ apps/api/src/ingestion/
   ingestion.module.ts
   ingestion.controller.ts        (POST /documents)
   ingestion.service.ts           (orquesta: extract → chunk → save)
-  pdf-extractor.service.ts       (wrapper de pdf-parse)
+  pdf-extractor.service.ts       (wrapper de pdf-parse v2 — PDFParse.getText())
   chunking.service.ts            (fixed-size + overlap, puro, fácil de testear)
   chunk-repository.interface.ts
   in-memory-chunk-repository.ts
@@ -54,5 +73,5 @@ apps/api/src/ingestion/
   dto/document-response.dto.ts
 ```
 
-`chunking.service.ts` es una función pura (texto → lista de chunks) sin dependencias de
-NestJS, para poder testearla con Jest sin levantar el módulo completo.
+`chunking.service.ts` es una función pura (texto + páginas → lista de chunks) sin
+dependencias de NestJS, para poder testearla con Jest sin levantar el módulo completo.

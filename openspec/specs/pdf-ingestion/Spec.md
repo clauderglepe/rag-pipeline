@@ -51,7 +51,7 @@ palabras) con un solapamiento de 50 tokens entre chunks consecutivos.
 ## Requirement: Metadata de cada chunk
 
 Cada chunk generado DEBE incluir: `id`, `documentId`, `index` (posición secuencial),
-`text`, `startOffset`, `endOffset`, `approxPage`.
+`text`, `startOffset`, `endOffset`, `page`.
 
 ### Scenario: Metadata consistente
 - **GIVEN** un documento ingerido con éxito
