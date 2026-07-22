@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { ExtractedPage } from './pdf-extractor.service';
 
 export interface RawChunk {
   index: number;
   text: string;
   startOffset: number;
   endOffset: number;
-  approxPage: number;
+  page: number; // ahora exacta, no aproximada
 }
 
 export interface ChunkingOptions {
-  chunkSize?: number; // en tokens aproximados (palabras)
+  chunkSize?: number;
   overlap?: number;
-  numPages?: number; // para calcular approxPage; si no se pasa, todo es página 1
+  pages?: ExtractedPage[]; // reemplaza a `numPages`
 }
 
 interface Token {
@@ -27,7 +28,7 @@ export class ChunkingService {
   chunk(text: string, options: ChunkingOptions = {}): RawChunk[] {
     const chunkSize = options.chunkSize ?? DEFAULT_CHUNK_SIZE;
     const overlap = options.overlap ?? DEFAULT_OVERLAP;
-    const numPages = options.numPages ?? 1;
+    const pages = options.pages ?? [];
 
     if (chunkSize <= overlap) {
       throw new Error('chunkSize debe ser mayor que overlap');
@@ -40,7 +41,6 @@ export class ChunkingService {
 
     const step = chunkSize - overlap;
     const chunks: RawChunk[] = [];
-    const charsPerPage = text.length / numPages;
 
     for (let i = 0, index = 0; i < tokens.length; i += step, index += 1) {
       const windowTokens = tokens.slice(i, i + chunkSize);
@@ -54,14 +54,25 @@ export class ChunkingService {
         text: text.slice(startOffset, endOffset),
         startOffset,
         endOffset,
-        approxPage: Math.floor(startOffset / charsPerPage) + 1,
+        page: this.findPage(startOffset, pages),
       });
 
-      // Si esta ventana ya llegó al final del texto, no hace falta otra vuelta.
       if (i + chunkSize >= tokens.length) break;
     }
 
     return chunks;
+  }
+
+  private findPage(offset: number, pages: ExtractedPage[]): number {
+    for (const page of pages) {
+      if (offset >= page.startOffset && offset < page.endOffset) {
+        return page.pageNumber;
+      }
+    }
+    // Cae en un separador entre páginas (o no se pasaron páginas):
+    // asignamos la última página conocida antes de ese offset.
+    const before = pages.filter((p) => p.startOffset <= offset);
+    return before.length > 0 ? before[before.length - 1].pageNumber : 1;
   }
 
   private tokenize(text: string): Token[] {
