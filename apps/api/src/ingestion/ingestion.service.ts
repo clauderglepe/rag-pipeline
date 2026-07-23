@@ -12,9 +12,8 @@ export class IngestionService {
     private readonly pdfExtractor: PdfExtractorService,
     private readonly chunkingService: ChunkingService,
     @Inject(CHUNK_REPOSITORY) private readonly chunkRepository: ChunkRepository,
-  ) { }
+  ) {}
   async ingest(buffer: Buffer): Promise<DocumentResponseDto> {
-
     const documentId = randomUUID();
 
     let extracted: Awaited<ReturnType<PdfExtractorService['extract']>>;
@@ -45,4 +44,3 @@ export class IngestionService {
     return { documentId, chunkCount: chunks.length };
   }
 }
-

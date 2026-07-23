@@ -22,7 +22,10 @@ describe('InMemoryChunkRepository', () => {
   });
 
   it('guarda y recupera chunks por documentId', async () => {
-    const chunks = [makeChunk({ id: 'c1', index: 0 }), makeChunk({ id: 'c2', index: 1 })];
+    const chunks = [
+      makeChunk({ id: 'c1', index: 0 }),
+      makeChunk({ id: 'c2', index: 1 }),
+    ];
 
     await repository.save(chunks);
     const result = await repository.findByDocumentId('doc-1');

@@ -1,12 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
+import { Response } from 'supertest';
 import path from 'path';
-import { App } from 'supertest/types';
 import { AppModule } from '../src/app.module';
-import { CHUNK_REPOSITORY, ChunkRepository } from '../src/ingestion/chunk-repository.interface';
-
-
+import {
+  CHUNK_REPOSITORY,
+  ChunkRepository,
+} from '../src/ingestion/chunk-repository.interface';
+import { DocumentResponseDto } from 'src/ingestion/dto/document-response.dto';
 describe('Ingestion (e2e)', () => {
   let app: INestApplication;
   let chunkRepository: ChunkRepository;
@@ -20,33 +22,35 @@ describe('Ingestion (e2e)', () => {
     await app.init();
 
     chunkRepository = moduleFixture.get<ChunkRepository>(CHUNK_REPOSITORY);
-
   });
 
   afterAll(async () => {
     await app.close();
-  })
+  });
 
   it('POST /documents ingiere un PDF real y genera chunks recuperables', async () => {
     const fixturePath = path.join(__dirname, '/fixtures/sample.pdf');
     console.log(fixturePath);
-    
-    const response = await request(app.getHttpServer())
+
+    const response: Response = await request(app.getHttpServer())
       .post('/documents')
       .attach('file', fixturePath)
       .expect(201);
-      expect(response.body).toHaveProperty('documentId');
-      expect(response.body.chunkCount).toBeGreaterThan(0);
+    const document: DocumentResponseDto = response.body as DocumentResponseDto;
+    expect(document).toHaveProperty('documentId');
+    expect(document.chunkCount).toBeGreaterThan(0);
 
     // Verificamos contra el propio repositorio, no solo contra la respuesta HTTP —
     // así confirmamos que lo que se guardó coincide con lo que se reportó.
-    const savedChunks = await chunkRepository.findByDocumentId(response.body.documentId);
-    expect(savedChunks).toHaveLength(response.body.chunkCount);
-    expect(savedChunks[0].documentId).toBe(response.body.documentId);
+    const savedChunks = await chunkRepository.findByDocumentId(
+      document.documentId,
+    );
+    expect(savedChunks).toHaveLength(document.chunkCount);
+    expect(savedChunks[0].documentId).toBe(document.documentId);
     expect(savedChunks[0].page).toBeGreaterThanOrEqual(1);
   });
- it('POST /documents rechaza un archivo que no es PDF con 400', async () => {
-    const response = await request(app.getHttpServer())
+  it('POST /documents rechaza un archivo que no es PDF con 400', async () => {
+    const response: Response = await request(app.getHttpServer())
       .post('/documents')
       .attach('file', Buffer.from('esto no es un pdf'), 'nota.txt')
       .expect(400);

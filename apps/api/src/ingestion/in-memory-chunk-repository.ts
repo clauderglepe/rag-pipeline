@@ -13,7 +13,9 @@ export class InMemoryChunkRepository implements ChunkRepository {
     const documentId = chunks[0].documentId;
     const allSameDocument = chunks.every((c) => c.documentId === documentId);
     if (!allSameDocument) {
-      throw new Error('save() solo acepta chunks de un único documentId por llamada');
+      throw new Error(
+        'save() solo acepta chunks de un único documentId por llamada',
+      );
     }
 
     this.chunksByDocument.set(documentId, [...chunks]);

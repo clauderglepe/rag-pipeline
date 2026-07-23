@@ -78,7 +78,10 @@ export class ChunkingService {
   private tokenize(text: string): Token[] {
     const tokens: Token[] = [];
     for (const match of text.matchAll(/\S+/g)) {
-      tokens.push({ start: match.index as number, end: (match.index as number) + match[0].length });
+      tokens.push({
+        start: match.index,
+        end: match.index + match[0].length,
+      });
     }
     return tokens;
   }

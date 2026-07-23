@@ -10,15 +10,23 @@ describe('IngestionService', () => {
   let chunkRepository: jest.Mocked<ChunkRepository>;
 
   beforeEach(() => {
-    pdfExtractor = { extract: jest.fn() } as any;
+    pdfExtractor = { extract: jest.fn() };
     chunkingService = { chunk: jest.fn() } as any;
-    chunkRepository = { save: jest.fn(), findByDocumentId: jest.fn() } as any;
+    chunkRepository = { save: jest.fn(), findByDocumentId: jest.fn() };
 
-    service = new IngestionService(pdfExtractor, chunkingService, chunkRepository);
+    service = new IngestionService(
+      pdfExtractor,
+      chunkingService,
+      chunkRepository,
+    );
   });
 
   it('orquesta extract -> chunk -> save y devuelve documentId + chunkCount', async () => {
-    pdfExtractor.extract.mockResolvedValue({ fullText: 'hola mundo', pages: [], totalPages: 1 });
+    pdfExtractor.extract.mockResolvedValue({
+      fullText: 'hola mundo',
+      pages: [],
+      totalPages: 1,
+    });
     chunkingService.chunk.mockReturnValue([
       { index: 0, text: 'hola mundo', startOffset: 0, endOffset: 10, page: 1 },
     ]);

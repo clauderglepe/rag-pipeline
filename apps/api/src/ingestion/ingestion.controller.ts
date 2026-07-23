@@ -23,7 +23,9 @@ export class IngestionController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @UseFilters(MulterExceptionFilter)
-  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: MAX_FILE_SIZE_BYTES } }))
+  @UseInterceptors(
+    FileInterceptor('file', { limits: { fileSize: MAX_FILE_SIZE_BYTES } }),
+  )
   async upload(
     @UploadedFile(
       new ParseFilePipe({

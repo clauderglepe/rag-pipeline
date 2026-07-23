@@ -9,8 +9,8 @@ import { InMemoryChunkRepository } from './in-memory-chunk-repository';
 @Module({
   controllers: [IngestionController],
   providers: [
-    IngestionService, 
-    PdfExtractorService, 
+    IngestionService,
+    PdfExtractorService,
     ChunkingService,
     { provide: CHUNK_REPOSITORY, useClass: InMemoryChunkRepository },
   ],

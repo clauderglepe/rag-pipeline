@@ -21,7 +21,9 @@ describe('PdfExtractorService', () => {
     expect(doc.fullText.length).toBeGreaterThan(0);
 
     // TODO: reemplaza por una frase real de la primera página de TU pdf.
-    expect(doc.pages[0].text).toContain('All that, however, is way more than we have time to cover in a foundational class like this one.');
+    expect(doc.pages[0].text).toContain(
+      'All that, however, is way more than we have time to cover in a foundational class like this one.',
+    );
   });
 
   it('los offsets de cada página son consistentes con fullText', async () => {

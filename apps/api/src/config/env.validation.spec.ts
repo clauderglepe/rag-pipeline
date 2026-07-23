@@ -1,7 +1,7 @@
-import { validate } from "./env.validation";
+import { validate } from './env.validation';
 
-describe('validate (env)', () => { 
-    const validEnv = {
+describe('validate (env)', () => {
+  const validEnv = {
     OLLAMA_BASE_URL: 'http://localhost:11434',
     OLLAMA_EMBEDDING_MODEL: 'nomic-embed-text',
     EMBEDDING_BATCH_SIZE: '32',
@@ -16,11 +16,15 @@ describe('validate (env)', () => {
   });
 
   it('rechaza una URL inválida', () => {
-    expect(() => validate({ ...validEnv, OLLAMA_BASE_URL: 'no-es-una-url' })).toThrow();
+    expect(() =>
+      validate({ ...validEnv, OLLAMA_BASE_URL: 'no-es-una-url' }),
+    ).toThrow();
   });
 
   it('rechaza un batch size no numérico', () => {
-    expect(() => validate({ ...validEnv, EMBEDDING_BATCH_SIZE: 'treinta y dos' })).toThrow();
+    expect(() =>
+      validate({ ...validEnv, EMBEDDING_BATCH_SIZE: 'treinta y dos' }),
+    ).toThrow();
   });
 
   it('rechaza una variable faltante', () => {

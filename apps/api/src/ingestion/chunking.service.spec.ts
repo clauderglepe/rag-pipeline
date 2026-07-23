@@ -45,8 +45,18 @@ describe('ChunkingService', () => {
     const thirdLen = Math.floor(text.length / 3);
     const pages: ExtractedPage[] = [
       { pageNumber: 1, text: '', startOffset: 0, endOffset: thirdLen },
-      { pageNumber: 2, text: '', startOffset: thirdLen, endOffset: thirdLen * 2 },
-      { pageNumber: 3, text: '', startOffset: thirdLen * 2, endOffset: text.length },
+      {
+        pageNumber: 2,
+        text: '',
+        startOffset: thirdLen,
+        endOffset: thirdLen * 2,
+      },
+      {
+        pageNumber: 3,
+        text: '',
+        startOffset: thirdLen * 2,
+        endOffset: text.length,
+      },
     ];
 
     const chunks = service.chunk(text, { chunkSize: 500, overlap: 50, pages });

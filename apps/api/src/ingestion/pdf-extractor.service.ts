@@ -21,7 +21,7 @@ const PAGE_SEPARATOR = '\n\n';
 export class PdfExtractorService {
   async extract(data: Buffer): Promise<ExtractedDocument> {
     const parser = new PDFParse({ data, CanvasFactory });
-    
+
     try {
       const result = await parser.getText();
 
@@ -33,13 +33,17 @@ export class PdfExtractorService {
         fullText += page.text;
         const endOffset = fullText.length;
 
-        pages.push({ pageNumber: page.num, text: page.text, startOffset, endOffset });
+        pages.push({
+          pageNumber: page.num,
+          text: page.text,
+          startOffset,
+          endOffset,
+        });
 
         fullText += PAGE_SEPARATOR;
       }
 
       return { fullText, pages, totalPages: result.total };
-
     } finally {
       // Libera recursos del worker interno — importante llamarlo siempre,
       // incluso si getText() lanza una excepción.
