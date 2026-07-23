@@ -53,6 +53,30 @@ Se usa `docker-compose.yml` para Ollama desde ya. Postgres/pgvector queda fuera 
 (ver plan, Fase 9 futura) — no se añade "porque ya tenemos Docker", solo cuando haya una
 necesidad real de multi-documento.
 
+### 6. Validación de configuración: Zod para variables de entorno; DTOs de HTTP, decisión pospuesta
+
+**Decisión:** las variables de entorno (`OLLAMA_BASE_URL`, `OLLAMA_EMBEDDING_MODEL`,
+`EMBEDDING_BATCH_SIZE`, etc.) se validan con `zod` (`schema.safeParse`), sin librerías
+puente adicionales.
+
+**Por qué:** para este caso concreto, Zod evita la ceremonia de `plainToInstance` +
+`validateSync` que requeriría `class-validator`, y el tipo TypeScript se infiere
+directamente del schema (`z.infer`) — una sola fuente de verdad.
+
+**Decisión explícitamente pospuesta:** qué librería de validación usar para los DTOs de
+los endpoints HTTP (Fase 6, junto con la generación de Swagger) **no** se decide ahora.
+Validar variables de entorno y validar cuerpos de petición HTTP son problemas distintos
+que no comparten schemas — no hay necesidad de resolver ambos con la misma herramienta
+solo por consistencia.
+
+Al llegar a la Fase 6, revisar el estado de
+[nestjs/nest#14539](https://github.com/nestjs/nest/issues/14539) (soporte nativo de
+Nest para Standard Schema, con el que Zod podría validar DTOs sin librerías puente como
+`nestjs-zod`) antes de decidir entre Zod y `class-validator` para esa fase. Si para
+entonces Nest v12 ya soporta Standard Schema de forma nativa, es un argumento fuerte a
+favor de Zod también ahí; si no, `class-validator` sigue siendo el camino sin
+dependencias puente adicionales.
+
 ## Consecuencias
 
 - Requisito de entorno: Docker + Docker Compose instalados; primera vez que se levante el
