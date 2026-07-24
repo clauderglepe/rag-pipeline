@@ -12,11 +12,7 @@ export interface VectorSearchResult {
 
 export interface VectorIndex {
   add(entries: VectorEntry[]): Promise<void>;
-  search(
-    vector: number[],
-    documentId: string,
-    topK: number,
-  ): Promise<VectorSearchResult[]>;
+  search(queryVector: number[], topK: number, documentId?: string): Promise<VectorSearchResult[]>;
 }
 
 export const VECTOR_INDEX = Symbol('VECTOR_INDEX');
