@@ -12,7 +12,7 @@ export class IngestionService {
     private readonly pdfExtractor: PdfExtractorService,
     private readonly chunkingService: ChunkingService,
     @Inject(CHUNK_REPOSITORY) private readonly chunkRepository: ChunkRepository,
-  ) {}
+  ) { }
   async ingest(buffer: Buffer): Promise<DocumentResponseDto> {
     const documentId = randomUUID();
 
@@ -30,6 +30,12 @@ export class IngestionService {
     const rawChunks = this.chunkingService.chunk(extracted.fullText, {
       pages: extracted.pages,
     });
+
+    if (rawChunks.length === 0) {
+      throw new BadRequestException(
+        'El PDF no contiene texto extraíble (¿está vacío o son solo imágenes escaneadas?)',
+      );
+    }
     const chunks: Chunk[] = rawChunks.map((raw) => ({
       id: `${documentId}:${raw.index}`,
       documentId,

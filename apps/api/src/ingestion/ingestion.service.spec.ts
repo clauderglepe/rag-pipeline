@@ -48,4 +48,12 @@ describe('IngestionService', () => {
       'No se pudo extraer texto del PDF',
     );
   });
+  it('lanza BadRequestException si el PDF no produce chunks', async () => {
+    pdfExtractor.extract.mockResolvedValue({ fullText: '', pages: [], totalPages: 1 });
+    chunkingService.chunk.mockReturnValue([]);
+
+    await expect(service.ingest(Buffer.from('fake-pdf'))).rejects.toThrow(
+      'no contiene texto extraíble',
+    );
+  });
 });
