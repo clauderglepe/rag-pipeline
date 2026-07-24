@@ -14,5 +14,6 @@ import { InMemoryChunkRepository } from './in-memory-chunk-repository';
     ChunkingService,
     { provide: CHUNK_REPOSITORY, useClass: InMemoryChunkRepository },
   ],
+  exports: [CHUNK_REPOSITORY],
 })
-export class IngestionModule {}
+export class IngestionModule { }
