@@ -7,3 +7,6 @@ Content-Type: application/pdf
 
 < ./fixtures/sample.pdf
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###############333
+POST http://localhost:3000/documents/277f616c-a134-4789-b42c-53f9a6e8db12/index
