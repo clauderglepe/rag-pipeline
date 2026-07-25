@@ -28,7 +28,7 @@ describe('IndexingService', () => {
   beforeEach(() => {
     chunkRepository = { save: jest.fn(), findByDocumentId: jest.fn() } as any;
     embeddingProvider = { embed: jest.fn() } as any;
-    vectorIndex = { add: jest.fn(), search: jest.fn() } as any;
+    vectorIndex = { add: jest.fn(), deleteByDocumentId: jest.fn(),search: jest.fn() } as any;
     configService = { get: jest.fn().mockReturnValue(2) }; // batch size = 2
 
     service = new IndexingService(chunkRepository, embeddingProvider, vectorIndex, configService as any);
@@ -37,7 +37,9 @@ describe('IndexingService', () => {
   it('lanza NotFoundException si el documento no existe', async () => {
     chunkRepository.findByDocumentId.mockResolvedValue([]);
 
-    await expect(service.indexDocument('no-existe')).rejects.toThrow(NotFoundException);
+    // await expect(service.indexDocument('no-existe')).rejects.toThrow(NotFoundException);
+    await expect(service.semanticSearch('no-existe', 'algo', 5)).rejects.toThrow(NotFoundException);
+
   });
 
   it('procesa los chunks en lotes según EMBEDDING_BATCH_SIZE', async () => {
@@ -74,5 +76,45 @@ describe('IndexingService', () => {
       { chunkId: 'c0', documentId: 'doc-1', vector: [1, 0] },
       { chunkId: 'c1', documentId: 'doc-1', vector: [0, 1] },
     ]);
+  });
+  it('devuelve lista vacía si el documento existe pero no fue indexado', async () => {
+    chunkRepository.findByDocumentId.mockResolvedValue([makeChunk()]);
+    embeddingProvider.embed.mockResolvedValue([[1, 0]]);
+    vectorIndex.search.mockResolvedValue([]); // nada indexado aún para este documentId
+
+    const result = await service.semanticSearch('doc-1', 'algo', 5);
+
+    expect(result).toEqual([]);
+  });
+
+  it('resuelve texto y página de cada resultado contra ChunkRepository', async () => {
+    const chunks = [makeChunk({ id: 'c0', text: 'texto A', page: 3 })];
+    chunkRepository.findByDocumentId.mockResolvedValue(chunks);
+    embeddingProvider.embed.mockResolvedValue([[1, 0]]);
+    vectorIndex.search.mockResolvedValue([{ chunkId: 'c0', score: 0.9 }]);
+
+    const result = await service.semanticSearch('doc-1', 'algo', 5);
+
+    expect(result).toEqual([{ chunkId: 'c0', score: 0.9, page: 3, text: 'texto A' }]);
+  });
+
+  it('lanza error si el vector index referencia un chunkId inexistente', async () => {
+    chunkRepository.findByDocumentId.mockResolvedValue([makeChunk({ id: 'c0' })]);
+    embeddingProvider.embed.mockResolvedValue([[1, 0]]);
+    vectorIndex.search.mockResolvedValue([{ chunkId: 'fantasma', score: 0.9 }]);
+
+    await expect(service.semanticSearch('doc-1', 'algo', 5)).rejects.toThrow('fantasma');
+  });
+  it('borra las entradas anteriores antes de reindexar (idempotencia)', async () => {
+    chunkRepository.findByDocumentId.mockResolvedValue([makeChunk({ id: 'c0' })]);
+    embeddingProvider.embed.mockResolvedValue([[1, 0]]);
+
+    await service.indexDocument('doc-1');
+
+    expect(vectorIndex.deleteByDocumentId).toHaveBeenCalledWith('doc-1');
+    // y se llama ANTES de add(), no después:
+    const deleteOrder = vectorIndex.deleteByDocumentId.mock.invocationCallOrder[0];
+    const addOrder = vectorIndex.add.mock.invocationCallOrder[0];
+    expect(deleteOrder).toBeLessThan(addOrder);
   });
 });

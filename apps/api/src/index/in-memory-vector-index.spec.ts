@@ -65,4 +65,26 @@ describe('InMemoryVectorIndex', () => {
     expect(results[0].score).toBeCloseTo(1); // misma dirección exacta → coseno = 1
     expect(results[1].score).toBeCloseTo(0); // direcciones perpendiculares → coseno = 0
   });
+  it('deleteByDocumentId elimina solo las entradas de ese documento', async () => {
+    await index.add([
+      { chunkId: 'a', documentId: 'doc-1', vector: [1, 0] },
+      { chunkId: 'b', documentId: 'doc-2', vector: [1, 0] },
+    ]);
+
+    await index.deleteByDocumentId('doc-1');
+
+    expect(await index.search([1, 0], 10, 'doc-1')).toEqual([]);
+    expect(await index.search([1, 0], 10, 'doc-2')).toHaveLength(1);
+  });
+
+  it('reindexar el mismo documento no duplica entradas', async () => {
+    const entries = [{ chunkId: 'a', documentId: 'doc-1', vector: [1, 0] }];
+
+    await index.add(entries);
+    await index.deleteByDocumentId('doc-1');
+    await index.add(entries);
+
+    const results = await index.search([1, 0], 10, 'doc-1');
+    expect(results).toHaveLength(1); // no 2
+  });
 });

@@ -43,4 +43,9 @@ export class InMemoryVectorIndex implements VectorIndex {
 
     return scored.slice(0, topK);
   }
+  async deleteByDocumentId(documentId: string): Promise<void> {
+    const remaining = this.entries.filter((e) => e.documentId !== documentId);
+    this.entries.length = 0;
+    this.entries.push(...remaining);
+  }
 }

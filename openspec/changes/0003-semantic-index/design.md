@@ -115,3 +115,17 @@ apps/api/src/index/
   dto/index-response.dto.ts
   dto/semantic-search-result.dto.ts
 ```
+
+## 8. Reindexar un documento debe ser idempotente
+
+**Descubierto:** al probar el endpoint de debug contra un documento real, llamar a
+`POST /documents/:id/index` más de una vez sobre el mismo `documentId` producía entradas
+duplicadas en el vector index — `InMemoryVectorIndex.add()` solo hace `push`, sin
+noción de reemplazo. `ChunkRepository.save()` (Fase 1) ya reemplaza por `documentId`;
+`VectorIndex` no tenía el equivalente, una inconsistencia entre ambos repositorios que
+solo se hizo visible probando con datos reales, no con los tests unitarios existentes
+(ninguno cubría "indexar el mismo documento dos veces").
+
+**Decisión:** `VectorIndex` incorpora `deleteByDocumentId(documentId)`.
+`IndexingService.indexDocument()` lo llama siempre antes de agregar las nuevas entradas
+— reindexar un documento reemplaza sus embeddings anteriores, nunca los acumula.

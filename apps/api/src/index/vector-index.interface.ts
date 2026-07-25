@@ -12,6 +12,7 @@ export interface VectorSearchResult {
 
 export interface VectorIndex {
   add(entries: VectorEntry[]): Promise<void>;
+  deleteByDocumentId(documentId: string): Promise<void>;
   search(queryVector: number[], topK: number, documentId?: string): Promise<VectorSearchResult[]>;
 }
 
