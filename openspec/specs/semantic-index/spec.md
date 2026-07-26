@@ -1,25 +1,24 @@
 # Capability: semantic-index
 
-> Estado: propuesto (se implementa en `changes/0003-semantic-index`). Este archivo se
-> actualiza a "implementado" cuando la última tarea de `tasks.md` se complete.
+> Estado: **implementado** (`changes/0003-semantic-index`).
 
 ## Requirement: Indexación de un documento ya ingerido
 
 El sistema DEBE poder generar embeddings para todos los chunks de un documento
 previamente ingerido (Fase 1) y almacenarlos en el índice vectorial.
 
-#### Scenario: Indexación exitosa
+### Scenario: Indexación exitosa
 - **GIVEN** un documento ya ingerido con N chunks (vía `POST /documents`)
 - **WHEN** el cliente hace `POST /documents/:documentId/index`
 - **THEN** el sistema responde `201 Created` con `{ documentId, embeddedCount }`, donde
   `embeddedCount` es igual a N
 
-#### Scenario: Documento inexistente
+### Scenario: Documento inexistente
 - **GIVEN** un `documentId` que no existe en `ChunkRepository`
 - **WHEN** el cliente hace `POST /documents/:documentId/index`
 - **THEN** el sistema responde `404 Not Found`
 
-#### Scenario: Ollama no disponible
+### Scenario: Ollama no disponible
 - **GIVEN** el servicio de Ollama no está corriendo o el modelo configurado no está
   descargado
 - **WHEN** el cliente hace `POST /documents/:documentId/index`
@@ -32,7 +31,7 @@ El sistema DEBE generar los embeddings de los chunks de un documento en lotes de
 configurable (no una petición HTTP por chunk, ni una única petición con todos los
 chunks del documento).
 
-#### Scenario: Documento con más chunks que el tamaño de lote
+### Scenario: Documento con más chunks que el tamaño de lote
 - **GIVEN** un documento con 100 chunks y un tamaño de lote configurado en 32
 - **WHEN** se indexa el documento
 - **THEN** se realizan 4 llamadas a `EmbeddingProvider` (3 lotes de 32 y uno de 4), no
@@ -43,7 +42,7 @@ chunks del documento).
 Al indexar un documento que ya tenía entradas previas en el índice vectorial, el sistema
 DEBE reemplazarlas, no acumularlas.
 
-#### Scenario: Reindexar el mismo documento dos veces
+### Scenario: Reindexar el mismo documento dos veces
 - **GIVEN** un documento ya indexado con N chunks
 - **WHEN** se ejecuta `POST /documents/:documentId/index` una segunda vez sobre el mismo
   documento
@@ -59,14 +58,14 @@ DEBE reemplazarlas, no acumularlas.
 El sistema DEBE poder devolver, para una consulta en texto libre, los `k` chunks de un
 documento ya indexado más similares semánticamente, ordenados por score descendente.
 
-#### Scenario: Búsqueda con resultados
+### Scenario: Búsqueda con resultados
 - **GIVEN** un documento ya indexado
 - **WHEN** el cliente hace `POST /documents/:documentId/debug/semantic-search` con
   `{ query, topK }`
 - **THEN** el sistema responde con una lista de a lo sumo `topK` resultados, cada uno
   con `{ chunkId, score, page, text }`, ordenados de mayor a menor `score`
 
-#### Scenario: Documento no indexado todavía
+### Scenario: Documento no indexado todavía
 - **GIVEN** un documento ingerido pero no indexado (`POST /documents/:id/index` no se
   ejecutó)
 - **WHEN** el cliente hace `POST /documents/:documentId/debug/semantic-search`
@@ -81,12 +80,12 @@ El índice vectorial DEBE normalizar a longitud unitaria (L2) cada vector que re
 producto punto. No DEBE asumir que el proveedor de embeddings ya entrega vectores
 normalizados (ver `design.md` §2).
 
-#### Scenario: Vectores idénticos
+### Scenario: Vectores idénticos
 - **GIVEN** un chunk cuyo embedding es idéntico al de la consulta
 - **WHEN** se calcula el score
 - **THEN** el score es 1 (o muy cercano a 1, dentro de tolerancia de punto flotante)
 
-#### Scenario: Proveedor que no normaliza
+### Scenario: Proveedor que no normaliza
 - **GIVEN** un `EmbeddingProvider` que devuelve vectores sin normalizar (norma ≠ 1)
 - **WHEN** esos vectores se guardan y se consultan en el índice
 - **THEN** el score calculado sigue siendo una similitud coseno matemáticamente correcta

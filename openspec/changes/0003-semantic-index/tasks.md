@@ -2,29 +2,33 @@
 
 Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre paréntesis).
 
-- [ ] Instalar `@nestjs/config`, registrar `ConfigModule` en `AppModule` con validación de
-      variables de entorno requeridas (`chore: add config module`)
-- [ ] Crear módulo `index` con estructura de carpetas (`chore(index): scaffold module`)
-- [ ] Definir `EmbeddingProvider` (interfaz) + `VectorIndex` (interfaz), incluyendo sus
+- [x] Instalar `@nestjs/config`, registrar `ConfigModule` en `AppModule` con validación de
+      variables de entorno requeridas (`chore: add config module`) — validación con
+      Zod (ver ADR-0001 §6), no `class-validator`
+- [x] Crear módulo `index` con estructura de carpetas (`chore(index): scaffold module`)
+- [x] Definir `EmbeddingProvider` (interfaz) + `VectorIndex` (interfaz), incluyendo sus
       tokens de inyección (`feat(index): add embedding and vector index interfaces`)
-- [ ] Implementar `OllamaEmbeddingProvider` (llama a `POST /api/embed`, batching
+- [x] Implementar `OllamaEmbeddingProvider` (llama a `POST /api/embed`, batching
       configurable) + tests unitarios con `fetch` mockeado
       (`feat(index): add ollama embedding provider`)
-- [ ] Implementar `InMemoryVectorIndex` (producto punto, ver `design.md` §2) + tests
-      unitarios (orden de resultados, filtro por `documentId`, top-k)
-      (`feat(index): add in-memory vector index`)
-- [ ] Implementar `IndexingService` (orquesta chunks → embeddings → vector index) + test
+- [x] Implementar `InMemoryVectorIndex` (normalización interna + producto punto, ver
+      `design.md` §2) + tests unitarios (orden de resultados, filtro por `documentId`,
+      top-k, y explícitamente: scores correctos con vectores de entrada **sin**
+      normalizar) (`feat(index): add in-memory vector index`)
+- [x] Implementar `IndexingService` (orquesta chunks → embeddings → vector index) + test
       unitario con `EmbeddingProvider`/`VectorIndex`/`ChunkRepository` mockeados
-      (`feat(index): add indexing service`)
-- [ ] Implementar `IndexController` con `POST /documents/:id/index`, manejando el caso
+      (`feat(index): add indexing service`) — incluye `fix(index): make document
+      reindexing idempotent`, encontrado probando con datos reales (ver `design.md` §8)
+- [x] Implementar `IndexController` con `POST /documents/:id/index`, manejando el caso
       de Ollama no disponible con `503` (`feat(index): add document indexing endpoint`)
-- [ ] Implementar el endpoint temporal `POST /documents/:id/debug/semantic-search`
+- [x] Implementar el endpoint temporal `POST /documents/:id/debug/semantic-search`
       (`feat(index): add temporary semantic search debug endpoint`)
-- [ ] Test de integración: ingerir el PDF fixture real, indexarlo (requiere Ollama
-      corriendo — documentar cómo saltar este test si Ollama no está disponible), y
-      verificar que una búsqueda semántica trivial devuelve resultados coherentes
+- [x] Test de integración: ingerir el PDF fixture real, indexarlo (requiere Ollama
+      corriendo, con detección automática de disponibilidad — ver nota más abajo), y
+      verificar que una búsqueda semántica trivial devuelve resultados coherentes,
+      incluyendo un test de regresión de la idempotencia de reindexado
       (`test(index): add semantic indexing integration test`)
-- [ ] Actualizar `openspec/specs/semantic-index/spec.md` como implementado
+- [x] Actualizar `openspec/specs/semantic-index/spec.md` como implementado
       (`docs(openspec): mark semantic-index spec as implemented`)
 - [ ] Actualizar checklist de Fase 2 en el README raíz (`docs: mark phase 2 as done`)
 
@@ -36,15 +40,10 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
   una pregunta del libro devuelve al menos un resultado con score razonable (> 0).
 - El spec en `openspec/specs/` refleja el comportamiento real.
 
-## Nota sobre el test de integración con Ollama
+## Decisión tomada sobre el test de integración con Ollama
 
-A diferencia del test e2e de la Fase 1 (autocontenido, sin dependencias externas), este
-test necesita Ollama corriendo con `nomic-embed-text` descargado. Dos opciones a decidir
-al implementar la tarea:
-1. Dejarlo como test normal, documentando el requisito en el README de tests.
-2. Marcarlo condicional (`describe.skip` si una variable de entorno como
-   `SKIP_OLLAMA_TESTS` está presente), para no romper `npm run test:e2e` en un entorno
-   sin Ollama (por ejemplo, un futuro pipeline de CI).
-
-Se decide cuál al llegar a esa tarea, no ahora — no vale la pena resolver un problema de
-CI que todavía no tenemos.
+Se optó por la opción 1 con detección automática: el test hace un `GET /api/tags` con
+timeout corto en `beforeAll()` y cada caso se salta (`return` temprano + `console.warn`)
+si Ollama no responde — sin variable de entorno manual que recordar. Limitación aceptada:
+un test "saltado" así figura como *passed* en el reporte de Jest, no como *skipped*; no se
+consideró que valiera la pena traer una dependencia extra solo para corregir eso.
