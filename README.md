@@ -34,10 +34,16 @@ Documentación de referencia:
    curl http://localhost:11434/api/tags
    ```
 
-2. Instalar dependencias y arrancar el backend:
+2. Configurar variables de entorno del backend (una sola vez):
 
    ```bash
    cd apps/api
+   cp .env.example .env
+   ```
+
+3. Instalar dependencias y arrancar el backend:
+
+   ```bash
    npm install
    npm run start:dev
    ```
@@ -45,7 +51,7 @@ Documentación de referencia:
    La API queda disponible en `http://localhost:3000`. La documentación OpenAPI
    (Swagger) se añade en la Fase 6 del roadmap, en `/api/docs`.
 
-3. Frontend Angular (`apps/web`): se añade en la Fase 7 del roadmap — todavía no existe.
+4. Frontend Angular (`apps/web`): se añade en la Fase 7 del roadmap — todavía no existe.
 
 ## Estado del proyecto
 
@@ -53,8 +59,8 @@ Ver el roadmap por fases en `plan-rag-pipeline.md`, sección 8.
 
 - [x] Fase 0 — Bootstrap
 - [x] Fase 1 — Ingesta del PDF
-- [ ] Fase 2 — Índice semántico (en curso)
-- [ ] Fase 3 — Índice léxico (BM25)
+- [x] Fase 2 — Índice semántico
+- [ ] Fase 3 — Índice léxico (BM25) (en curso)
 - [ ] Fase 4 — Retrieval híbrido
 - [ ] Fase 5 — Generación RAG
 - [ ] Fase 6 — Contrato API (Swagger)
