@@ -62,4 +62,42 @@ describe('LexicalIndexingService', () => {
     const addOrder = lexicalIndex.add.mock.invocationCallOrder[0];
     expect(deleteOrder).toBeLessThan(addOrder);
   });
+
+  describe('lexicalSearch', () => {
+    it('lanza NotFoundException si el documento no existe', async () => {
+      chunkRepository.findByDocumentId.mockResolvedValue([]);
+
+      await expect(service.lexicalSearch('no-existe', 'algo', 5)).rejects.toThrow(NotFoundException);
+    });
+
+    it('devuelve lista vacía si el documento existe pero no fue indexado léxicamente', async () => {
+      chunkRepository.findByDocumentId.mockResolvedValue([makeChunk()]);
+      lexicalIndex.search.mockResolvedValue([]);
+
+      const result = await service.lexicalSearch('doc-1', 'algo', 5);
+
+      expect(result).toEqual([]);
+    });
+
+    it('tokeniza la query antes de buscar', async () => {
+      chunkRepository.findByDocumentId.mockResolvedValue([makeChunk()]);
+      lexicalIndex.search.mockResolvedValue([]);
+
+      await service.lexicalSearch('doc-1', 'Hola EC2!', 5);
+
+      expect(lexicalIndex.search).toHaveBeenCalledWith(['hola', 'ec2'], 5, 'doc-1');
+    });
+
+    it('resuelve texto y página de cada resultado contra ChunkRepository', async () => {
+      chunkRepository.findByDocumentId.mockResolvedValue([
+        makeChunk({ id: 'c0', text: 'texto A', page: 3 }),
+      ]);
+      lexicalIndex.search.mockResolvedValue([{ chunkId: 'c0', score: 2.1 }]);
+
+      const result = await service.lexicalSearch('doc-1', 'algo', 5);
+
+      expect(result).toEqual([{ chunkId: 'c0', score: 2.1, page: 3, text: 'texto A' }]);
+    });
+  });
+
 });

@@ -53,6 +53,14 @@ documento ya indexado con mayor score BM25, ordenados de forma descendente.
 - **THEN** el chunk que lo contiene aparece con un score notablemente mayor a 0,
   reflejando la coincidencia léxica exacta
 
+### Scenario: Documento no indexado todavía
+- **GIVEN** un documento ingerido pero no indexado léxicamente (`POST
+  /documents/:id/index/lexical` no se ejecutó)
+- **WHEN** el cliente hace `POST /documents/:documentId/debug/lexical-search`
+- **THEN** el sistema responde `200 OK` con una lista vacía `[]` — mismo criterio que
+  el índice semántico (Fase 2): es un resultado válido, no un error. Solo se responde
+  `404` cuando el `documentId` nunca fue ingerido
+
 ## Requirement: `documentId` obligatorio en la búsqueda léxica
 
 A diferencia del índice semántico, el `documentId` NO es opcional en una búsqueda BM25
