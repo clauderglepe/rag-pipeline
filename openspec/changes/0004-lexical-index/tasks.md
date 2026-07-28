@@ -2,7 +2,7 @@
 
 Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre paréntesis).
 
-- [ ] Renombrar `POST /documents/:id/index` → `POST /documents/:id/index/semantic` en
+- [x] Renombrar `POST /documents/:id/index` → `POST /documents/:id/index/semantic` en
       `IndexController`, y actualizar sus tests + el e2e de la Fase 2
       (`refactor(index): rename indexing endpoint to /index/semantic`)
 - [ ] Crear módulo `lexical` con estructura de carpetas (`chore(lexical): scaffold module`)
