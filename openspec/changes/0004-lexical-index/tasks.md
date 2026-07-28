@@ -9,10 +9,10 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
 - [x] Implementar `Tokenizer` (función pura) + tests (minúsculas, split, tokens vacíos
       descartados, mismo resultado para el mismo texto en cualquier posición)
       (`feat(lexical): add shared tokenizer`)
-- [ ] Implementar `bm25.ts` (cálculo de IDF y score, funciones puras) + tests con casos
+- [x] Implementar `bm25.ts` (cálculo de IDF y score, funciones puras) + tests con casos
       calculados a mano (ver `design.md` §4 para la fórmula exacta)
       (`feat(lexical): add bm25 scoring functions`)
-- [ ] Definir `LexicalIndex` (interfaz, con `deleteByDocumentId` desde el inicio — ver
+- [x] Definir `LexicalIndex` (interfaz, con `deleteByDocumentId` desde el inicio — ver
       `design.md` §5) (`feat(lexical): add lexical index interface`)
 - [ ] Implementar `Bm25LexicalIndex` + tests unitarios: orden de resultados, filtro por
       `documentId` obligatorio, idempotencia de reindexado (test explícito desde el
