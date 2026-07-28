@@ -60,8 +60,8 @@ Ver el roadmap por fases en `plan-rag-pipeline.md`, sección 8.
 - [x] Fase 0 — Bootstrap
 - [x] Fase 1 — Ingesta del PDF
 - [x] Fase 2 — Índice semántico
-- [ ] Fase 3 — Índice léxico (BM25) (en curso)
-- [ ] Fase 4 — Retrieval híbrido
+- [x] Fase 3 — Índice léxico (BM25)
+- [ ] Fase 4 — Retrieval híbrido  (en curso)
 - [ ] Fase 5 — Generación RAG
 - [ ] Fase 6 — Contrato API (Swagger)
 - [ ] Fase 7 — Frontend Angular
