@@ -21,7 +21,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
 - [x] Implementar `LexicalIndexingService` (orquesta chunks → tokenizar → guardar) + test
       unitario con `ChunkRepository`/`LexicalIndex` mockeados
       (`feat(lexical): add lexical indexing service`)
-- [ ] Implementar `LexicalController` con `POST /documents/:id/index/lexical`
+- [x] Implementar `LexicalController` con `POST /documents/:id/index/lexical`
       (`feat(lexical): add document lexical indexing endpoint`)
 - [ ] Implementar el endpoint temporal `POST /documents/:id/debug/lexical-search`
       (validación manual del DTO, mismo criterio que la Fase 2 tarea 7)
