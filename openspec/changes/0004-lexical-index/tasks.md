@@ -18,7 +18,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       `documentId` obligatorio, idempotencia de reindexado (test explícito desde el
       inicio, no como corrección posterior)
       (`feat(lexical): add bm25 lexical index`)
-- [ ] Implementar `LexicalIndexingService` (orquesta chunks → tokenizar → guardar) + test
+- [x] Implementar `LexicalIndexingService` (orquesta chunks → tokenizar → guardar) + test
       unitario con `ChunkRepository`/`LexicalIndex` mockeados
       (`feat(lexical): add lexical indexing service`)
 - [ ] Implementar `LexicalController` con `POST /documents/:id/index/lexical`
