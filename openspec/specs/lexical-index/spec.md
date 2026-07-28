@@ -1,7 +1,6 @@
 # Capability: lexical-index
 
-> Estado: propuesto (se implementa en `changes/0004-lexical-index`). Este archivo se
-> actualiza a "implementado" cuando la última tarea de `tasks.md` se complete.
+> Estado: **implementado** (`changes/0004-lexical-index`).
 
 ## Requirement: Indexación léxica de un documento ya ingerido
 

@@ -30,7 +30,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       verificar que una búsqueda por un término exacto conocido del libro (no una
       paráfrasis — ahí es donde BM25 debería ganarle a lo semántico) devuelve el chunk
       correcto (`test(lexical): add lexical indexing integration test`)
-- [ ] Actualizar `openspec/specs/lexical-index/spec.md` como implementado
+- [x] Actualizar `openspec/specs/lexical-index/spec.md` como implementado
       (`docs(openspec): mark lexical-index spec as implemented`)
 - [ ] Actualizar checklist de Fase 3 en el README raíz (`docs: mark phase 3 as done`)
 
