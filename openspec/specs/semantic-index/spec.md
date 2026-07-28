@@ -9,19 +9,19 @@ previamente ingerido (Fase 1) y almacenarlos en el índice vectorial.
 
 ### Scenario: Indexación exitosa
 - **GIVEN** un documento ya ingerido con N chunks (vía `POST /documents`)
-- **WHEN** el cliente hace `POST /documents/:documentId/index`
+- **WHEN** el cliente hace `POST /documents/:documentId/index/semantic`
 - **THEN** el sistema responde `201 Created` con `{ documentId, embeddedCount }`, donde
   `embeddedCount` es igual a N
 
 ### Scenario: Documento inexistente
 - **GIVEN** un `documentId` que no existe en `ChunkRepository`
-- **WHEN** el cliente hace `POST /documents/:documentId/index`
+- **WHEN** el cliente hace `POST /documents/:documentId/index/semantic`
 - **THEN** el sistema responde `404 Not Found`
 
 ### Scenario: Ollama no disponible
 - **GIVEN** el servicio de Ollama no está corriendo o el modelo configurado no está
   descargado
-- **WHEN** el cliente hace `POST /documents/:documentId/index`
+- **WHEN** el cliente hace `POST /documents/:documentId/index/semantic`
 - **THEN** el sistema responde `503 Service Unavailable` con un mensaje que indica
   revisar que Ollama esté corriendo y el modelo descargado
 
@@ -44,7 +44,7 @@ DEBE reemplazarlas, no acumularlas.
 
 ### Scenario: Reindexar el mismo documento dos veces
 - **GIVEN** un documento ya indexado con N chunks
-- **WHEN** se ejecuta `POST /documents/:documentId/index` una segunda vez sobre el mismo
+- **WHEN** se ejecuta `POST /documents/:documentId/index/semantic` una segunda vez sobre el mismo
   documento
 - **THEN** el índice vectorial contiene exactamente N entradas para ese `documentId`,
   no 2N
