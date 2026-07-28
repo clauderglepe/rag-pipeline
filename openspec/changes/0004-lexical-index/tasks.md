@@ -14,7 +14,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       (`feat(lexical): add bm25 scoring functions`)
 - [x] Definir `LexicalIndex` (interfaz, con `deleteByDocumentId` desde el inicio — ver
       `design.md` §5) (`feat(lexical): add lexical index interface`)
-- [ ] Implementar `Bm25LexicalIndex` + tests unitarios: orden de resultados, filtro por
+- [x] Implementar `Bm25LexicalIndex` + tests unitarios: orden de resultados, filtro por
       `documentId` obligatorio, idempotencia de reindexado (test explícito desde el
       inicio, no como corrección posterior)
       (`feat(lexical): add bm25 lexical index`)
