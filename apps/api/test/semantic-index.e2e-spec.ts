@@ -72,7 +72,7 @@ describe('Semantic Index (e2e)', () => {
     const documentId = await ingestFixture();
 
     const indexResponse = await request(app.getHttpServer())
-      .post(`/documents/${documentId}/index`)
+      .post(`/documents/${documentId}/index/semantic`)
       .expect(201);
 
     expect(indexResponse.body.embeddedCount).toBeGreaterThan(0);
@@ -96,7 +96,7 @@ describe('Semantic Index (e2e)', () => {
   it('responde 404 al indexar un documentId inexistente', async () => {
     if (!ollamaAvailable) return;
 
-    await request(app.getHttpServer()).post('/documents/no-existe-123/index').expect(404);
+    await request(app.getHttpServer()).post('/documents/no-existe-123/index/semantic').expect(404);
   });
 
   it('responde 200 con lista vacía al buscar en un documento ingerido pero no indexado', async () => {
@@ -117,8 +117,8 @@ describe('Semantic Index (e2e)', () => {
 
     const documentId = await ingestFixture();
 
-    await request(app.getHttpServer()).post(`/documents/${documentId}/index`).expect(201);
-    await request(app.getHttpServer()).post(`/documents/${documentId}/index`).expect(201);
+    await request(app.getHttpServer()).post(`/documents/${documentId}/index/semantic`).expect(201);
+    await request(app.getHttpServer()).post(`/documents/${documentId}/index/semantic`).expect(201);
 
     const searchResponse = await request(app.getHttpServer())
       .post(`/documents/${documentId}/debug/semantic-search`)

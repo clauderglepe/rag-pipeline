@@ -8,7 +8,7 @@ import { parseSemanticSearchQuery } from './dto/semantic-search-query.dto';
 export class IndexController {
   constructor(private readonly indexingService: IndexingService) {}
 
-  @Post(':documentId/index')
+  @Post(':documentId/index/semantic')
   @HttpCode(HttpStatus.CREATED)
   async index(@Param('documentId') documentId: string): Promise<IndexResponseDto> {
     return this.indexingService.indexDocument(documentId);
