@@ -23,10 +23,10 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       (`feat(lexical): add lexical indexing service`)
 - [x] Implementar `LexicalController` con `POST /documents/:id/index/lexical`
       (`feat(lexical): add document lexical indexing endpoint`)
-- [ ] Implementar el endpoint temporal `POST /documents/:id/debug/lexical-search`
+- [x] Implementar el endpoint temporal `POST /documents/:id/debug/lexical-search`
       (validación manual del DTO, mismo criterio que la Fase 2 tarea 7)
       (`feat(lexical): add temporary lexical search debug endpoint`)
-- [ ] Test de integración: ingerir el PDF fixture real, indexarlo léxicamente, y
+- [x] Test de integración: ingerir el PDF fixture real, indexarlo léxicamente, y
       verificar que una búsqueda por un término exacto conocido del libro (no una
       paráfrasis — ahí es donde BM25 debería ganarle a lo semántico) devuelve el chunk
       correcto (`test(lexical): add lexical indexing integration test`)
