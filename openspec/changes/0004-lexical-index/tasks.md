@@ -5,8 +5,8 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
 - [x] Renombrar `POST /documents/:id/index` → `POST /documents/:id/index/semantic` en
       `IndexController`, y actualizar sus tests + el e2e de la Fase 2
       (`refactor(index): rename indexing endpoint to /index/semantic`)
-- [ ] Crear módulo `lexical` con estructura de carpetas (`chore(lexical): scaffold module`)
-- [ ] Implementar `Tokenizer` (función pura) + tests (minúsculas, split, tokens vacíos
+- [x] Crear módulo `lexical` con estructura de carpetas (`chore(lexical): scaffold module`)
+- [x] Implementar `Tokenizer` (función pura) + tests (minúsculas, split, tokens vacíos
       descartados, mismo resultado para el mismo texto en cualquier posición)
       (`feat(lexical): add shared tokenizer`)
 - [ ] Implementar `bm25.ts` (cálculo de IDF y score, funciones puras) + tests con casos
