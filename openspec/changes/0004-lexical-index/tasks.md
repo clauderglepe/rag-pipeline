@@ -32,7 +32,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       correcto (`test(lexical): add lexical indexing integration test`)
 - [x] Actualizar `openspec/specs/lexical-index/spec.md` como implementado
       (`docs(openspec): mark lexical-index spec as implemented`)
-- [ ] Actualizar checklist de Fase 3 en el README raíz (`docs: mark phase 3 as done`)
+- [x] Actualizar checklist de Fase 3 en el README raíz (`docs: mark phase 3 as done`)
 
 ## Definición de "hecho"
 
