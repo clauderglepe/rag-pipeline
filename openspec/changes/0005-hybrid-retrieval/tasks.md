@@ -12,7 +12,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
 - [x] Implementar `RetrievalService` (llama a ambos índices en paralelo, fusiona,
       resuelve metadata y `foundIn`) + test unitario con `IndexingService`/
       `LexicalIndexingService` mockeados (`feat(retrieval): add retrieval service`)
-- [ ] Implementar `RetrievalController` con `POST /documents/:id/search`
+- [x] Implementar `RetrievalController` con `POST /documents/:id/search`
       (`feat(retrieval): add hybrid search endpoint`)
 - [ ] Eliminar `debugSemanticSearch` de `IndexController` + su DTO de query y tests
       (`refactor(index): remove temporary semantic search debug endpoint`)
