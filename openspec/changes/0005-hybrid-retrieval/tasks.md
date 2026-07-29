@@ -5,9 +5,9 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
 - [x] Verificar/agregar `exports: [IndexingService]` en `IndexModule` y
       `exports: [LexicalIndexingService]` en `LexicalModule`, si no estaban ya
       exportados (`refactor(index,lexical): export services for cross-module use`)
-- [ ] Crear módulo `retrieval` con estructura de carpetas
+- [x] Crear módulo `retrieval` con estructura de carpetas
       (`chore(retrieval): scaffold module`)
-- [ ] Implementar `rrf.ts` (`reciprocalRankFusion`, función pura) + tests con listas
+- [x] Implementar `rrf.ts` (`reciprocalRankFusion`, función pura) + tests con listas
       rankeadas de ejemplo calculadas a mano (`feat(retrieval): add rrf fusion function`)
 - [ ] Implementar `RetrievalService` (llama a ambos índices en paralelo, fusiona,
       resuelve metadata y `foundIn`) + test unitario con `IndexingService`/
