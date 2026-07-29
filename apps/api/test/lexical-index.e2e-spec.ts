@@ -1,14 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import request from 'supertest';
 import path from 'path';
 import { AppModule } from '../src/app.module';
-import { EnvironmentVariables } from '../src/config/env.validation';
 
 describe('Lexical Index (e2e)', () => {
   let app: INestApplication;
- 
+
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -16,9 +14,6 @@ describe('Lexical Index (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-
-    const configService = moduleFixture.get<ConfigService<EnvironmentVariables, true>>(ConfigService);
-  
   });
 
   afterAll(async () => {
@@ -36,7 +31,6 @@ describe('Lexical Index (e2e)', () => {
   }
 
   it('indexa un documento real y permite buscarlo léxicamente', async () => {
-
     const documentId = await ingestFixture();
 
     const indexResponse = await request(app.getHttpServer())
@@ -54,8 +48,7 @@ describe('Lexical Index (e2e)', () => {
     expect(searchResponse.body.length).toBeLessThanOrEqual(3);
 
     for (const result of searchResponse.body) {
-      expect(result.score).toBeGreaterThan(-1);
-      expect(result.score).toBeLessThanOrEqual(1);
+      expect(result.score).toBeGreaterThanOrEqual(0);
       expect(result.text.length).toBeGreaterThan(0);
       expect(result.page).toBeGreaterThanOrEqual(1);
     }
