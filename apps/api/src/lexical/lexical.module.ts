@@ -13,5 +13,6 @@ import { IngestionModule } from '../ingestion/ingestion.module';
     LexicalIndexingService,
     { provide: LEXICAL_INDEX, useClass: Bm25LexicalIndex },
   ],
+  exports: [LexicalIndexingService],
 })
 export class LexicalModule {}
