@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { validate } from './config/env.validation';
 import { IndexModule } from './index/index.module';
 import { LexicalModule } from './lexical/lexical.module';
+import { RetrievalModule } from './retrieval/retrieval.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { LexicalModule } from './lexical/lexical.module';
     IngestionModule,
     IndexModule,
     LexicalModule,
+    RetrievalModule,
   ],
   controllers: [AppController],
   providers: [AppService],
