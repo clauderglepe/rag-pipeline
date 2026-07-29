@@ -16,5 +16,6 @@ import { IngestionModule } from '../ingestion/ingestion.module';
     { provide: EMBEDDING_PROVIDER, useClass: OllamaEmbeddingProvider },
     { provide: VECTOR_INDEX, useClass: InMemoryVectorIndex },
   ],
+  exports: [IndexingService],
 })
-export class IndexModule {}
+export class IndexModule { }
