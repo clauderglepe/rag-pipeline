@@ -9,7 +9,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       (`chore(retrieval): scaffold module`)
 - [x] Implementar `rrf.ts` (`reciprocalRankFusion`, función pura) + tests con listas
       rankeadas de ejemplo calculadas a mano (`feat(retrieval): add rrf fusion function`)
-- [ ] Implementar `RetrievalService` (llama a ambos índices en paralelo, fusiona,
+- [x] Implementar `RetrievalService` (llama a ambos índices en paralelo, fusiona,
       resuelve metadata y `foundIn`) + test unitario con `IndexingService`/
       `LexicalIndexingService` mockeados (`feat(retrieval): add retrieval service`)
 - [ ] Implementar `RetrievalController` con `POST /documents/:id/search`
