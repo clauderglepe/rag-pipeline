@@ -24,7 +24,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       proveniente de un solo índice (`test(retrieval): add hybrid search integration test`)
 - [x] Actualizar `openspec/specs/hybrid-retrieval/spec.md` como implementado
       (`docs(openspec): mark hybrid-retrieval spec as implemented`)
-- [ ] Actualizar checklist de Fase 4 en el README raíz (`docs: mark phase 4 as done`)
+- [x] Actualizar checklist de Fase 4 en el README raíz (`docs: mark phase 4 as done`)
 
 ## Definición de "hecho"
 
