@@ -22,7 +22,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       verificar que `POST /documents/:id/search` devuelve resultados fusionados
       coherentes, incluyendo al menos un caso donde `foundIn` muestre un resultado
       proveniente de un solo índice (`test(retrieval): add hybrid search integration test`)
-- [ ] Actualizar `openspec/specs/hybrid-retrieval/spec.md` como implementado
+- [x] Actualizar `openspec/specs/hybrid-retrieval/spec.md` como implementado
       (`docs(openspec): mark hybrid-retrieval spec as implemented`)
 - [ ] Actualizar checklist de Fase 4 en el README raíz (`docs: mark phase 4 as done`)
 
