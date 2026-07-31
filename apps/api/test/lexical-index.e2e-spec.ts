@@ -30,7 +30,7 @@ describe('Lexical Index (e2e)', () => {
     return response.body.documentId;
   }
 
-  it('indexa un documento real y permite buscarlo léxicamente', async () => {
+  it('indexa un documento real léxicamente', async () => {
     const documentId = await ingestFixture();
 
     const indexResponse = await request(app.getHttpServer())
@@ -39,55 +39,20 @@ describe('Lexical Index (e2e)', () => {
 
     expect(indexResponse.body.indexedCount).toBeGreaterThan(0);
 
-    const searchResponse = await request(app.getHttpServer())
-      .post(`/documents/${documentId}/debug/lexical-search`)
-      .send({ query: 'AWS', topK: 3 })
-      .expect(200);
-
-    expect(searchResponse.body.length).toBeGreaterThan(0);
-    expect(searchResponse.body.length).toBeLessThanOrEqual(3);
-
-    for (const result of searchResponse.body) {
-      expect(result.score).toBeGreaterThanOrEqual(0);
-      expect(result.text.length).toBeGreaterThan(0);
-      expect(result.page).toBeGreaterThanOrEqual(1);
-    }
+    // Ídem: búsqueda léxica end-to-end + idempotencia se prueban ahora en
+    // hybrid-search.e2e-spec.ts (Fase 4, tarea 8).
   });
 
   it('responde 404 al indexar un documentId inexistente', async () => {
- 
     await request(app.getHttpServer()).post('/documents/no-existe-123/index/lexical').expect(404);
   });
 
-  it('responde 200 con lista vacía al buscar en un documento ingerido pero no indexado', async () => {
-  
-    const documentId = await ingestFixture(); // se ingiere, pero deliberadamente NO se indexa
-
-    const response = await request(app.getHttpServer())
-      .post(`/documents/${documentId}/debug/lexical-search`)
-      .send({ query: 'cualquier cosa' })
-      .expect(200);
-
-    expect(response.body).toEqual([]);
-  });
-
-  it('reindexar el mismo documento es idempotente (regresión del bug de duplicados)', async () => {
-  
+  it('el endpoint de debug retirado ya no responde', async () => {
     const documentId = await ingestFixture();
 
-    await request(app.getHttpServer()).post(`/documents/${documentId}/index/lexical`).expect(201);
-    await request(app.getHttpServer()).post(`/documents/${documentId}/index/lexical`).expect(201);
-
-    const searchResponse = await request(app.getHttpServer())
+    await request(app.getHttpServer())
       .post(`/documents/${documentId}/debug/lexical-search`)
-      .send({ query: 'AWS', topK: 50 }) // topK alto: si hubiera duplicados, aparecerían
-      .expect(200);
-
-    const chunkIds = searchResponse.body.map((r: { chunkId: string }) => r.chunkId);
-    const uniqueChunkIds = new Set(chunkIds);
-
-    // Si el bug de la tarea anterior reapareciera, este assert fallaría:
-    // habría más entradas que chunkIds únicos.
-    expect(chunkIds.length).toBe(uniqueChunkIds.size);
+      .send({ query: 'algo' })
+      .expect(404);
   });
 });
