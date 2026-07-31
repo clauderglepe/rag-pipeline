@@ -5,27 +5,15 @@ import request from 'supertest';
 import path from 'path';
 import { AppModule } from '../src/app.module';
 import { EnvironmentVariables } from '../src/config/env.validation';
+import { isOllamaAvailable } from './utils/ollama-availability';
 
+// (se borra la función isOllamaAvailable que estaba definida acá mismo)
 // Timeout por defecto de Jest (5000ms) alcanza para tests con mocks, pero no para
 // llamadas reales a Ollama: generar embeddings es inferencia real (no instantánea),
 // y la primera llamada puede tardar más porque Ollama carga el modelo en memoria.
 // Si tu libro real tiene muchos chunks y este valor se queda corto, subilo más —
 // no hay una "cifra correcta" universal, depende de tu hardware y el tamaño del PDF.
 jest.setTimeout(60_000);
-
-async function isOllamaAvailable(baseUrl: string): Promise<boolean> {
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 2000);
-
-    const response = await fetch(`${baseUrl}/api/tags`, { signal: controller.signal });
-    clearTimeout(timeout);
-
-    return response.ok;
-  } catch {
-    return false;
-  }
-}
 
 describe('Semantic Index (e2e)', () => {
   let app: INestApplication;

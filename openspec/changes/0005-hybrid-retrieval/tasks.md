@@ -18,7 +18,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       (`refactor(index): remove temporary semantic search debug endpoint`)
 - [x] Eliminar `debugLexicalSearch` de `LexicalController` + su DTO de query y tests
       (`refactor(lexical): remove temporary lexical search debug endpoint`)
-- [ ] Test de integración: ingerir + indexar (semántico y léxico) el PDF fixture real, y
+- [x] Test de integración: ingerir + indexar (semántico y léxico) el PDF fixture real, y
       verificar que `POST /documents/:id/search` devuelve resultados fusionados
       coherentes, incluyendo al menos un caso donde `foundIn` muestre un resultado
       proveniente de un solo índice (`test(retrieval): add hybrid search integration test`)
