@@ -47,7 +47,7 @@ describe('Semantic Index (e2e)', () => {
     if (!ollamaAvailable) {
       console.warn(
         `⚠️  Ollama no responde en ${baseUrl} — los tests de indexación semántica se omiten. ` +
-          `Corré "docker compose up -d" para incluirlos.`,
+        `Corré "docker compose up -d" para incluirlos.`,
       );
     }
   });
@@ -77,20 +77,9 @@ describe('Semantic Index (e2e)', () => {
 
     expect(indexResponse.body.embeddedCount).toBeGreaterThan(0);
 
-    const searchResponse = await request(app.getHttpServer())
-      .post(`/documents/${documentId}/debug/semantic-search`)
-      .send({ query: 'texto del documento', topK: 3 })
-      .expect(200);
-
-    expect(searchResponse.body.length).toBeGreaterThan(0);
-    expect(searchResponse.body.length).toBeLessThanOrEqual(3);
-
-    for (const result of searchResponse.body) {
-      expect(result.score).toBeGreaterThan(-1);
-      expect(result.score).toBeLessThanOrEqual(1);
-      expect(result.text.length).toBeGreaterThan(0);
-      expect(result.page).toBeGreaterThanOrEqual(1);
-    }
+    // La verificación de búsqueda semántica end-to-end y de idempotencia de
+    // reindexado se movió a hybrid-search.e2e-spec.ts (Fase 4, tarea 8) — el
+    // endpoint de debug que usaban esos tests dejó de existir en esta fase.
   });
 
   it('responde 404 al indexar un documentId inexistente', async () => {
@@ -99,37 +88,12 @@ describe('Semantic Index (e2e)', () => {
     await request(app.getHttpServer()).post('/documents/no-existe-123/index/semantic').expect(404);
   });
 
-  it('responde 200 con lista vacía al buscar en un documento ingerido pero no indexado', async () => {
-    if (!ollamaAvailable) return;
-
-    const documentId = await ingestFixture(); // se ingiere, pero deliberadamente NO se indexa
-
-    const response = await request(app.getHttpServer())
-      .post(`/documents/${documentId}/debug/semantic-search`)
-      .send({ query: 'cualquier cosa' })
-      .expect(200);
-
-    expect(response.body).toEqual([]);
-  });
-
-  it('reindexar el mismo documento es idempotente (regresión del bug de duplicados)', async () => {
-    if (!ollamaAvailable) return;
-
+  it('el endpoint de debug retirado ya no responde', async () => {
     const documentId = await ingestFixture();
 
-    await request(app.getHttpServer()).post(`/documents/${documentId}/index/semantic`).expect(201);
-    await request(app.getHttpServer()).post(`/documents/${documentId}/index/semantic`).expect(201);
-
-    const searchResponse = await request(app.getHttpServer())
+    await request(app.getHttpServer())
       .post(`/documents/${documentId}/debug/semantic-search`)
-      .send({ query: 'texto del documento', topK: 50 }) // topK alto: si hubiera duplicados, aparecerían
-      .expect(200);
-
-    const chunkIds = searchResponse.body.map((r: { chunkId: string }) => r.chunkId);
-    const uniqueChunkIds = new Set(chunkIds);
-
-    // Si el bug de la tarea anterior reapareciera, este assert fallaría:
-    // habría más entradas que chunkIds únicos.
-    expect(chunkIds.length).toBe(uniqueChunkIds.size);
+      .send({ query: 'algo' })
+      .expect(404); // 404 de enrutamiento (ruta inexistente), no de "documento no encontrado"
   });
 });
