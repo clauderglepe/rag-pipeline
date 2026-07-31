@@ -1,7 +1,6 @@
 # Capability: hybrid-retrieval
 
-> Estado: propuesto (se implementa en `changes/0005-hybrid-retrieval`). Este archivo se
-> actualiza a "implementado" cuando la última tarea de `tasks.md` se complete.
+> Estado: **implementado** (`changes/0005-hybrid-retrieval`).
 
 ## Requirement: Búsqueda híbrida pública
 
