@@ -4,6 +4,7 @@ describe('validate (env)', () => {
   const validEnv = {
     OLLAMA_BASE_URL: 'http://localhost:11434',
     OLLAMA_EMBEDDING_MODEL: 'nomic-embed-text',
+    OLLAMA_GENERATION_MODEL: 'qwen2.5:7b-instruct', 
     EMBEDDING_BATCH_SIZE: '32',
   };
 
@@ -11,6 +12,7 @@ describe('validate (env)', () => {
     const result = validate(validEnv);
 
     expect(result.OLLAMA_BASE_URL).toBe('http://localhost:11434');
+    expect(result.OLLAMA_GENERATION_MODEL).toBe('qwen2.5:7b-instruct');
     expect(result.EMBEDDING_BATCH_SIZE).toBe(32);
     expect(typeof result.EMBEDDING_BATCH_SIZE).toBe('number');
   });
@@ -31,4 +33,9 @@ describe('validate (env)', () => {
     const { OLLAMA_EMBEDDING_MODEL, ...incomplete } = validEnv;
     expect(() => validate(incomplete)).toThrow();
   });
+  
+  it('rechaza si falta OLLAMA_GENERATION_MODEL', () => {
+    const { OLLAMA_GENERATION_MODEL, ...incomplete } = validEnv;
+    expect(() => validate(incomplete)).toThrow();
+  });  
 });
