@@ -4,6 +4,7 @@ import { z } from 'zod';
 const envSchema = z.object({
   OLLAMA_BASE_URL: z.url(),
   OLLAMA_EMBEDDING_MODEL: z.string().min(1),
+  OLLAMA_GENERATION_MODEL: z.string().min(1), 
   EMBEDDING_BATCH_SIZE: z.coerce.number().int().min(1).max(500),
 });
 

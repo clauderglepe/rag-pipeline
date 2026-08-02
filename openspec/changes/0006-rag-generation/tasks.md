@@ -2,7 +2,7 @@
 
 Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre paréntesis).
 
-- [ ] Agregar `OLLAMA_GENERATION_MODEL` al schema de Zod (`env.validation.ts`) y a
+- [x] Agregar `OLLAMA_GENERATION_MODEL` al schema de Zod (`env.validation.ts`) y a
       `.env.example` (default `qwen2.5:7b-instruct`)
       (`chore(config): add ollama generation model env var`)
 - [ ] Crear módulo `generation` con estructura de carpetas
