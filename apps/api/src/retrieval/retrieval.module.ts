@@ -7,6 +7,7 @@ import { LexicalModule } from '../lexical/lexical.module';
 @Module({
   imports: [IndexModule, LexicalModule],
   controllers: [RetrievalController],
-  providers: [RetrievalService]
+  providers: [RetrievalService],
+  exports: [RetrievalService]
 })
 export class RetrievalModule {}
