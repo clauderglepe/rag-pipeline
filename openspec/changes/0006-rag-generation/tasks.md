@@ -5,7 +5,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
 - [x] Agregar `OLLAMA_GENERATION_MODEL` al schema de Zod (`env.validation.ts`) y a
       `.env.example` (default `qwen2.5:7b-instruct`)
       (`chore(config): add ollama generation model env var`)
-- [ ] Crear módulo `generation` con estructura de carpetas
+- [x] Crear módulo `generation` con estructura de carpetas
       (`chore(generation): scaffold module`)
 - [ ] Implementar `LlmProvider` (interfaz) + `OllamaLlmProvider` (`POST /api/chat`,
       manejo de errores igual que `OllamaEmbeddingProvider`) + tests unitarios con

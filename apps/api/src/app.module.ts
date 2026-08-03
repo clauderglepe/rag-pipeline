@@ -7,6 +7,8 @@ import { validate } from './config/env.validation';
 import { IndexModule } from './index/index.module';
 import { LexicalModule } from './lexical/lexical.module';
 import { RetrievalModule } from './retrieval/retrieval.module';
+import { GenerationModule } from './generation/generation.module';
+
 
 @Module({
   imports: [
@@ -18,8 +20,9 @@ import { RetrievalModule } from './retrieval/retrieval.module';
     IndexModule,
     LexicalModule,
     RetrievalModule,
+    GenerationModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,],
 })
-export class AppModule {}
+export class AppModule { }
