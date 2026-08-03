@@ -8,6 +8,7 @@ import { IndexModule } from './index/index.module';
 import { LexicalModule } from './lexical/lexical.module';
 import { RetrievalModule } from './retrieval/retrieval.module';
 import { GenerationModule } from './generation/generation.module';
+import { QueryModule } from './query/query.module';
 
 
 @Module({
@@ -21,6 +22,7 @@ import { GenerationModule } from './generation/generation.module';
     LexicalModule,
     RetrievalModule,
     GenerationModule,
+    QueryModule,
   ],
   controllers: [AppController],
   providers: [AppService,],

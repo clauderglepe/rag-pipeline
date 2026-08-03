@@ -15,7 +15,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       (`feat(generation): add prompt builder`)
 - [x] Implementar `GenerationService` (orquesta `buildPrompt` + `LlmProvider`) + test
       unitario con `LlmProvider` mockeado (`feat(generation): add generation service`)
-- [ ] Crear módulo `query` con estructura de carpetas
+- [x] Crear módulo `query` con estructura de carpetas
       (`chore(query): scaffold module`)
 - [ ] Implementar `QueryService` (orquesta `RetrievalService` + `GenerationService`,
       maneja el caso de contexto vacío sin llamar al LLM — ver `design.md` §4) + test
