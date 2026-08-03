@@ -17,10 +17,10 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       unitario con `LlmProvider` mockeado (`feat(generation): add generation service`)
 - [x] Crear módulo `query` con estructura de carpetas
       (`chore(query): scaffold module`)
-- [ ] Implementar `QueryService` (orquesta `RetrievalService` + `GenerationService`,
+- [x] Implementar `QueryService` (orquesta `RetrievalService` + `GenerationService`,
       maneja el caso de contexto vacío sin llamar al LLM — ver `design.md` §4) + test
       unitario con ambos servicios mockeados (`feat(query): add query service`)
-- [ ] Implementar `QueryController` con `POST /documents/:id/query`
+- [x] Implementar `QueryController` con `POST /documents/:id/query`
       (validación  manual del DTO) (`feat(query): add rag query endpoint`)
 - [ ] Test de integración: ingerir + indexar (ambos índices) el PDF fixture real, y
       verificar que `POST /documents/:id/query` devuelve una respuesta no vacía que
