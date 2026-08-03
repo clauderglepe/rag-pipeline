@@ -7,7 +7,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       (`chore(config): add ollama generation model env var`)
 - [x] Crear módulo `generation` con estructura de carpetas
       (`chore(generation): scaffold module`)
-- [ ] Implementar `LlmProvider` (interfaz) + `OllamaLlmProvider` (`POST /api/chat`,
+- [x] Implementar `LlmProvider` (interfaz) + `OllamaLlmProvider` (`POST /api/chat`,
       manejo de errores igual que `OllamaEmbeddingProvider`) + tests unitarios con
       `fetch` mockeado (`feat(generation): add ollama llm provider`)
 - [ ] Implementar `buildPrompt()` (función pura) + tests (formato del contexto,
