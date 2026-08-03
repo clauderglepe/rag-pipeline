@@ -13,7 +13,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
 - [x] Implementar `buildPrompt()` (función pura) + tests (formato del contexto,
       pregunta preservada tal cual, caso de contexto vacío)
       (`feat(generation): add prompt builder`)
-- [ ] Implementar `GenerationService` (orquesta `buildPrompt` + `LlmProvider`) + test
+- [x] Implementar `GenerationService` (orquesta `buildPrompt` + `LlmProvider`) + test
       unitario con `LlmProvider` mockeado (`feat(generation): add generation service`)
 - [ ] Crear módulo `query` con estructura de carpetas
       (`chore(query): scaffold module`)
