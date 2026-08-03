@@ -10,7 +10,7 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
 - [x] Implementar `LlmProvider` (interfaz) + `OllamaLlmProvider` (`POST /api/chat`,
       manejo de errores igual que `OllamaEmbeddingProvider`) + tests unitarios con
       `fetch` mockeado (`feat(generation): add ollama llm provider`)
-- [ ] Implementar `buildPrompt()` (función pura) + tests (formato del contexto,
+- [x] Implementar `buildPrompt()` (función pura) + tests (formato del contexto,
       pregunta preservada tal cual, caso de contexto vacío)
       (`feat(generation): add prompt builder`)
 - [ ] Implementar `GenerationService` (orquesta `buildPrompt` + `LlmProvider`) + test
