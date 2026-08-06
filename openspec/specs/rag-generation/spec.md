@@ -1,6 +1,6 @@
 # Capability: rag-generation
 
-> Estado: propuesto (se implementa en `changes/0006-rag-generation`). Este archivo se actualiza a "implementado" cuando la última tarea de `tasks.md` se complete.
+> Estado: implementado (`changes/0006-rag-generation`).
 
 ## Requirement: Generación de respuesta a partir de contexto recuperado
 

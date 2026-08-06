@@ -22,11 +22,11 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       unitario con ambos servicios mockeados (`feat(query): add query service`)
 - [x] Implementar `QueryController` con `POST /documents/:id/query`
       (validación  manual del DTO) (`feat(query): add rag query endpoint`)
-- [ ] Test de integración: ingerir + indexar (ambos índices) el PDF fixture real, y
+- [x] Test de integración: ingerir + indexar (ambos índices) el PDF fixture real, y
       verificar que `POST /documents/:id/query` devuelve una respuesta no vacía que
       cita al menos una página presente en el contexto recuperado
       (`test(query): add rag query integration test`)
-- [ ] Actualizar `openspec/specs/rag-generation/spec.md` y
+- [x] Actualizar `openspec/specs/rag-generation/spec.md` y
       `openspec/specs/rag-query/spec.md` como implementados
       (`docs(openspec): mark rag-generation and rag-query specs as implemented`)
 - [ ] Actualizar checklist de Fase 5 en el README raíz (`docs: mark phase 5 as done`)
