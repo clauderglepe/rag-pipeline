@@ -4,9 +4,9 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
 
 - [x] Actualizar ADR-0001 §6: reemplazar la sección "pospuesta" por la decisión final (`class-validator`, con la justificación y lo encontrado sobre Nest v12 — copiar el contenido de `design.md` §1) 
       (`docs(adr): finalize dto validation decision`)
-- [ ] Instalar `class-validator`, `class-transformer`, `@nestjs/swagger`
+- [x] Instalar `class-validator`, `class-transformer`, `@nestjs/swagger`
       (`chore: add validation and swagger dependencies`)
-- [ ] Registrar `ValidationPipe` global en `main.ts` (`whitelist`, `forbidNonWhitelisted`,`transform`) 
+- [x] Registrar `ValidationPipe` global en `main.ts` (`whitelist`, `forbidNonWhitelisted`,`transform`) 
       (`feat(api): add global validation pipe`)
 - [ ] Convertir `HybridSearchQueryDto` (`retrieval`) a clase con `class-validator` + `@ApiProperty()`; borrar `parseHybridSearchQuery()` y su test; actualizar `RetrievalController` 
       (`refactor(retrieval): migrate query dto to class-validator`)
