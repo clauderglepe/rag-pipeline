@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { AllExceptionsFilter } from './common/filters/all-exceptions/all-exceptions.filter';
 
 
 async function bootstrap() {
@@ -12,6 +13,7 @@ async function bootstrap() {
     transform: true, // convierte tipos primitivos (ej. querystring "5" -> number 5)
   }),
 )
+  app.useGlobalFilters(new AllExceptionsFilter());
   await app.listen(process.env.PORT ?? 3000);
 }
 
