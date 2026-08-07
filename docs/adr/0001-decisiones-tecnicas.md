@@ -63,11 +63,16 @@ puente adicionales.
 `validateSync` que requeriría `class-validator`, y el tipo TypeScript se infiere
 directamente del schema (`z.infer`) — una sola fuente de verdad.
 
-**Decisión explícitamente pospuesta:** qué librería de validación usar para los DTOs de
-los endpoints HTTP (Fase 6, junto con la generación de Swagger) **no** se decide ahora.
-Validar variables de entorno y validar cuerpos de petición HTTP son problemas distintos
-que no comparten schemas — no hay necesidad de resolver ambos con la misma herramienta
-solo por consistencia.
+**Decisión:** `class-validator` + `class-transformer`, con `ValidationPipe` global para validación de DTOs y generación de documentación con Swagger.
+
+*Lo que se encontró al llegar a esta fase:**
+- NestJS v12 (PR #16391) trae soporte nativo de Standard Schema en decoradores de ruta (`@Body`, `@Query`, etc.), compatible con Zod — en preview desde junio 2026, estable previsto para inicios de Q3 2026.
+- **Sin resolver ni siquiera en la propia discusión del PR:** cómo generar el schema de Swagger a partir de DTOs inferidos de Zod. Un colaborador externo hizo esa pregunta exacta en el PR sin respuesta concluyente al momento de esta decisión.
+- La documentación oficial de Nest va a seguir recomendando `class-validator` como default para la mayoría de casos de uso, según cobertura de Trilon Consulting sobre el release.
+
+**Por qué, concretamente:** el objetivo explícito de esta fase es Swagger/OpenAPI completo — no solo validación. `class-validator` + `@nestjs/swagger` es la integración nativa, sin piezas puente, sin preguntas abiertas. Zod con Standard Schema resuelve la mitad del problema (validación) pero no la otra mitad (documentación autogenerada), que es precisamente lo que esta fase necesita resuelto de punta a punta. Si en el futuro madura la integración Zod-Swagger, se revisa — no antes, y no a costa de bloquear esta fase con una pieza todavía experimental.
+
+**Consecuencia:** las variables de entorno (`env.validation.ts`) siguen usando Zod — esa decisión (Fase 2) no cambia, porque nunca dependió de Swagger. Solo los DTOs de HTTP adoptan `class-validator`, manteniendo dos herramientas para dos problemas distintos, tal como se dejó explícito en la decisión original.
 
 Al llegar a la Fase 6, revisar el estado de
 [nestjs/nest#14539](https://github.com/nestjs/nest/issues/14539) (soporte nativo de
