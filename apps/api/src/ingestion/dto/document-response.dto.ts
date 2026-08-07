@@ -1,6 +1,9 @@
-// src/ingestion/dto/document-response.dto.ts
-// Implementación real: tarea "feat(ingestion): add document upload endpoint"
+import { ApiProperty } from '@nestjs/swagger';
+
 export class DocumentResponseDto {
+  @ApiProperty({ description: 'Identificador único del documento ingerido' })
   documentId!: string;
+
+  @ApiProperty({ description: 'Cantidad de chunks generados a partir del PDF' })
   chunkCount!: number;
 }
