@@ -1,20 +1,46 @@
-// src/query/dto/query-request.dto.spec.ts
-import { parseQueryRequest } from './query-request.dto';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
+import { QueryRequestDto } from './query-request.dto';
 
-describe('parseQueryRequest', () => {
-  it('acepta un query válido, preservándolo tal cual (sin recortar espacios)', () => {
-    expect(parseQueryRequest({ query: '  ¿qué es EC2?  ' })).toEqual({
-      query: '  ¿qué es EC2?  ',
-    });
+describe('QueryRequestDto', () => {
+  it('preserva el query tal cual, sin recortar espacios', () => {
+    const dto = plainToInstance(QueryRequestDto, { query: '  ¿qué es EC2?  ' });
+
+    expect(dto.query).toBe('  ¿qué es EC2?  '); // exactamente igual, sin trim
   });
 
-  it.each([
-    [{}, 'sin query'],
-    [{ query: '' }, 'query vacío'],
-    [{ query: '   ' }, 'query solo espacios (se rechaza igual, aunque no se recorte al devolver)'],
-    [{ query: 123 }, 'query no string'],
-    [null, 'body nulo'],
-  ])('rechaza: %o (%s)', (...input) => {
-    expect(() => parseQueryRequest(input)).toThrow();
+  it('valida sin errores un query no vacío', async () => {
+    const dto = plainToInstance(QueryRequestDto, { query: 'algo' });
+    const errors = await validate(dto);
+
+    expect(errors).toHaveLength(0);
+  });
+
+  it('rechaza query vacío', async () => {
+    const dto = plainToInstance(QueryRequestDto, { query: '' });
+    const errors = await validate(dto);
+
+    expect(errors.length).toBeGreaterThan(0);
+  });
+
+  it('rechaza query de solo espacios (a diferencia de @IsNotEmpty, que lo aceptaría)', async () => {
+    const dto = plainToInstance(QueryRequestDto, { query: '   ' });
+    const errors = await validate(dto);
+
+    expect(errors.length).toBeGreaterThan(0);
+  });
+
+  it('rechaza query ausente', async () => {
+    const dto = plainToInstance(QueryRequestDto, {});
+    const errors = await validate(dto);
+
+    expect(errors.length).toBeGreaterThan(0);
+  });
+
+  it('rechaza query no string', async () => {
+    const dto = plainToInstance(QueryRequestDto, { query: 123 });
+    const errors = await validate(dto);
+
+    expect(errors.length).toBeGreaterThan(0);
   });
 });
