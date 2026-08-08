@@ -10,15 +10,15 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       (`feat(api): add global validation pipe`)
 - [ ] Convertir `HybridSearchQueryDto` (`retrieval`) a clase con `class-validator` + `@ApiProperty()`; borrar `parseHybridSearchQuery()` y su test; actualizar `RetrievalController` 
       (`refactor(retrieval): migrate query dto to class-validator`)
-- [ ] Convertir `QueryRequestDto` (`query`) al mismo patrón; borrar `parseQueryRequest()` y su test; actualizar `QueryController`
+- [x] Convertir `QueryRequestDto` (`query`) al mismo patrón; borrar `parseQueryRequest()` y su test; actualizar `QueryController`
       (`refactor(query): migrate query dto to class-validator`)
-- [ ] Agregar `@ApiProperty()`/`@ApiPropertyOptional()` a todos los DTOs de respuesta existentes: `DocumentResponseDto`, `IndexResponseDto`, `LexicalIndexResponseDto`,`HybridSearchResultDto`, `QueryResponseDto`
+- [x] Agregar `@ApiProperty()`/`@ApiPropertyOptional()` a todos los DTOs de respuesta existentes: `DocumentResponseDto`, `IndexResponseDto`, `LexicalIndexResponseDto`,`HybridSearchResultDto`, `QueryResponseDto`
       (`feat(api): annotate response dtos for swagger`)
-- [ ] Implementar `AllExceptionsFilter` (`src/common/filters/`) + registrarlo global en `main.ts` + tests unitarios (mapeo de `HttpException` conocidas, y de un `Error` genérico no controlado, verificando que NO expone detalles internos)
+- [x] Implementar `AllExceptionsFilter` (`src/common/filters/`) + registrarlo global en `main.ts` + tests unitarios (mapeo de `HttpException` conocidas, y de un `Error` genérico no controlado, verificando que NO expone detalles internos)
       (`feat(api): add global exception filter`)
-- [ ] Configurar `SwaggerModule` en `main.ts`, expuesto en `/api/docs`
+- [x] Configurar `SwaggerModule` en `main.ts`, expuesto en `/api/docs`
       (`feat(api): add swagger documentation`)
-- [ ] Anotar `POST /documents` (`IngestionController`) con `@ApiConsumes`/`@ApiBody` para que aparezca correctamente en Swagger pese a no tener DTO de clase
+- [x] Anotar `POST /documents` (`IngestionController`) con `@ApiConsumes`/`@ApiBody` para que aparezca correctamente en Swagger pese a no tener DTO de clase
       (`feat(api): document file upload endpoint in swagger`)
 - [ ] Test de integración: verificar que `GET /api/docs` responde `200`, y que un request con un DTO inválido (ej. `topK` como string no numérico, o una propiedad extra no declarada) responde `400` con el nuevo formato de error consistente
       (`test(api): add api contract integration test`)
@@ -37,4 +37,4 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
 
 ## Nota sobre el orden de las tareas
 
-Las dos migraciones de DTOs (tareas 4 y 5) dependen de que el `ValidationPipe` global Ya esté registrado (tarea 3) — si se hacen en el orden inverso, los nuevos DTOs con decoradores no se validan todavía y los tests de esas tareas fallarían sin razón aparente. Respetar el orden del checklist acá no es arbitrario.
+Las dos migraciones de DTOs (tareas 4 y 5) dependen de que el `ValidationPipe` global Ya esté registrado (tarea 3) — si se hacen en el orden inverso, los nuevos DTOs con decoradores no se validan todavía y los tests de esas tareas fallarían sin razón aparente. Respetar el orden del checklist; no es arbitrario.
