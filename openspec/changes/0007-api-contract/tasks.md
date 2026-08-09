@@ -22,9 +22,9 @@ Cada tarea marcada corresponde a un commit atómico (Conventional Commits entre 
       (`feat(api): document file upload endpoint in swagger`)
 - [x] Test de integración: verificar que `GET /api/docs` responde `200`, y que un request con un DTO inválido (ej. `topK` como string no numérico, o una propiedad extra no declarada) responde `400` con el nuevo formato de error consistente
       (`test(api): add api contract integration test`)
-- [ ] Actualizar `openspec/specs/api-contract/spec.md` como implementado
+- [x] Actualizar `openspec/specs/api-contract/spec.md` como implementado
       (`docs(openspec): mark api-contract spec as implemented`)
-- [ ] Actualizar checklist de Fase 6 en el README raíz, agregando el link a `/api/docs`
+- [x] Actualizar checklist de Fase 6 en el README raíz, agregando el link a `/api/docs`
       (`docs: mark phase 6 as done`)
 
 ## Definición de "hecho"
