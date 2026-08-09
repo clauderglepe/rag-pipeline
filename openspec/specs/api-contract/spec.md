@@ -1,6 +1,6 @@
 # Capability: api-contract
 
-> Estado: propuesto (se implementa en `changes/0007-api-contract`). Este archivo se actualiza a "implementado" cuando la última tarea de `tasks.md` se complete.
+> Estado: implementado (`changes/0007-api-contract`).
 
 ## Requirement: Documentación OpenAPI navegable
 
