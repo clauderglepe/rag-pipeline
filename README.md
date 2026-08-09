@@ -63,8 +63,8 @@ Ver el roadmap por fases en `plan-rag-pipeline.md`, sección 8.
 - [x] Fase 3 — Índice léxico (BM25)
 - [x] Fase 4 — Retrieval híbrido  
 - [x] Fase 5 — Generación RAG
-- [ ] Fase 6 — Contrato API (planificada: ver `openspec/changes/0007-api-contract/`)
-- [ ] Fase 7 — Frontend Angular
+- [x] Fase 6 — Contrato API
+- [ ] Fase 7 — Frontend Angular (en curso)
 - [ ] Fase 8 — Evaluación
 
 ## Convenciones de contribución
